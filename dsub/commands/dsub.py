@@ -477,6 +477,11 @@ def _parse_arguments(prog, argv):
       help="""Google Cloud Storage bucket path (gs://bucket) to mount using
           Cloud Storage FUSE (gcsfuse).""",
       metavar='KEY=REMOTE_PATH')
+  google_v2.add_argument(
+      '--service-account',
+      default='default',
+      type=str,
+      help='The service account to use the genomics api/run the VM instance in')
 
   args = provider_base.parse_args(
       parser, {
@@ -530,7 +535,8 @@ def _get_job_resources(args):
       accelerator_count=args.accelerator_count,
       timeout=timeout,
       log_interval=log_interval,
-      ssh=args.ssh)
+      ssh=args.ssh,
+      service_account=args.service_account)
 
 
 def _get_job_metadata(provider, user_id, job_name, script, task_ids,
